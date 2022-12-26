@@ -4,7 +4,7 @@ import { capitalize, DiscordRequest } from './utils.js';
 export async function HasGuildCommands(appId, guildId, commands) {
   if (guildId === '' || appId === '') return;
 
-  commands.forEach((c) => HasGuildCommand(appId, guildId, c));
+  return Promise.all(commands.map((c) => HasGuildCommand(appId, guildId, c)));
 }
 
 // Checks for a command
