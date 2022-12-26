@@ -1,5 +1,7 @@
 # POC OpenAI + Discord Bot
 
+<img src="assets/logo.png" alt="logo" style="zoom:33%;" />
+
 ## Command `/responder`:
 
 ![Command `/responder`](assets/command-responder.png)
