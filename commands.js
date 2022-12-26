@@ -14,18 +14,36 @@ async function HasGuildCommand(appId, guildId, command) {
 
   try {
     const res = await DiscordRequest(endpoint, { method: 'GET' });
-    const data = await res.json();
+    const commands = await res.json();
 
-    if (data) {
-      const installedNames = data.map((c) => c['name']);
-      // This is just matching on the name, so it's not good for updates
-      if (!installedNames.includes(command['name'])) {
-        console.log(`Installing "${command['name']}"`);
-        InstallGuildCommand(appId, guildId, command);
-      } else {
-        console.log(`"${command['name']}" command already installed`);
-      }
+    if (!commands) {
+      return;
     }
+
+    const installedNames = commands.map((c) => c['name']);
+
+    // This is just matching on the name, so it's not good for updates
+    if (!installedNames.includes(command['name'])) {
+      console.log(`Installing "${command['name']}"`);
+
+      InstallGuildCommand(appId, guildId, command);
+
+      return;
+    }
+
+    if (process.env.REINSTALL_COMMANDS === '1') {
+      console.log(`Reinstalling "${command['name']}"`);
+
+      ReinstallGuildCommand(
+        appId,
+        guildId,
+        commands.find((c) => c.name === c['name'])
+      );
+
+      return;
+    }
+
+    console.log(`"${command['name']}" command already installed`);
   } catch (err) {
     console.error(err);
   }
@@ -35,9 +53,23 @@ async function HasGuildCommand(appId, guildId, command) {
 export async function InstallGuildCommand(appId, guildId, command) {
   // API endpoint to get and post guild commands
   const endpoint = `applications/${appId}/guilds/${guildId}/commands`;
+
   // install command
   try {
     await DiscordRequest(endpoint, { method: 'POST', body: command });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// Uninstalls a command
+export async function ReinstallGuildCommand(appId, guildId, command) {
+  // API endpoint to get and post guild commands
+  const endpoint = `applications/${appId}/guilds/${guildId}/commands/${command.id}`;
+
+  // reinstall command
+  try {
+    await DiscordRequest(endpoint, { method: 'PATCH', body: command });
   } catch (err) {
     console.error(err);
   }
@@ -58,25 +90,9 @@ function createCommandChoices() {
   return commandChoices;
 }
 
-// Simple test command
-export const TEST_COMMAND = {
-  name: 'test',
-  description: 'Basic guild command',
-  type: 1,
-};
-
-// Command containing options
-export const CHALLENGE_COMMAND = {
-  name: 'challenge',
-  description: 'Challenge to a match of rock paper scissors',
-  options: [
-    {
-      type: 3,
-      name: 'object',
-      description: 'Pick your object',
-      required: true,
-      choices: createCommandChoices(),
-    },
-  ],
-  type: 1,
+// Simple answer command
+export const ANSWER_COMMAND = {
+  name: 'responder',
+  description: '',
+  type: 3,
 };
