@@ -1,29 +1,8 @@
-# Getting Started app for Discord
+# POC OpenAI + Discord Bot
 
-This project contains a basic rock-paper-scissors-style Discord app written in JavaScript, built for the [getting started guide](https://discord.com/developers/docs/getting-started).
+## Command `/responder`:
 
-![Demo of app](/assets/getting-started-demo.gif?raw=true)
-
-> ✨ A version of this code is also hosted **[on Glitch 🎏](https://glitch.com/~getting-started-discord)** and **[on Replit 🌀](https://replit.com/@shaydewael/discord-example-app)**
-
-## Project structure
-Below is a basic overview of the project structure:
-
-```
-├── examples    -> short, feature-specific sample apps
-│   ├── button.js
-│   ├── command.js
-│   ├── modal.js
-│   ├── selectMenu.js
-├── .env.sample -> sample .env file
-├── app.js      -> main entrypoint for app
-├── commands.js -> slash command payloads + helpers
-├── game.js     -> logic specific to RPS
-├── utils.js    -> utility functions and enums
-├── package.json
-├── README.md
-└── .gitignore
-```
+![Command `/responder`](assets/command-responder.png)
 
 ## Running app locally
 
@@ -36,17 +15,17 @@ Configuring the app is covered in detail in the [getting started guide](https://
 
 First clone the project:
 ```
-git clone https://github.com/discord/discord-example-app.git
+git clone https://github.com/paulosalvatore/poc-ia-discord.git
 ```
 
 Then navigate to its directory and install dependencies:
 ```
-cd discord-example-app
+cd poc-ia-discord
 npm install
 ```
 ### Get app credentials
 
-Fetch the credentials from your app's settings and add them to a `.env` file (see `.env.sample` for an example). You'll need your app ID (`APP_ID`), server ID (`GUILD_ID`), bot token (`DISCORD_TOKEN`), and public key (`PUBLIC_KEY`).
+Fetch the credentials from your app's settings and add them to a `.env` file (see `.env.sample` for an example). You'll need your app ID (`APP_ID`), server ID (`GUILD_ID`), bot token (`DISCORD_TOKEN`), public key (`PUBLIC_KEY`), and OpenAI key (`OPENAI_API_KEY`).
 
 Fetching credentials is covered in detail in the [getting started guide](https://discord.com/developers/docs/getting-started).
 
@@ -56,11 +35,15 @@ Fetching credentials is covered in detail in the [getting started guide](https:/
 
 After your credentials are added, go ahead and run the app:
 
-```
-node app.js
+```bash
+npm start
 ```
 
-> ⚙️ A package [like `nodemon`](https://github.com/remy/nodemon), which watches for local changes and restarts your app, may be helpful while locally developing.
+or
+
+```bash
+npm run dev
+```
 
 ### Set up interactivity
 
